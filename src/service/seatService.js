@@ -4,7 +4,6 @@ const {Seat}=require('../Schema/Seat.js');
 
 async function createSeat(req, res, next){
     try{
-        console.log('!!!!!!!!!!!!!');
         const {hallNumber, seatNumber}=req.body;
         console.log(hallNumber);
         console.log(seatNumber);
@@ -66,24 +65,22 @@ async function createSeat(req, res, next){
 //       }
 // }
 
-// async function changeUsersPassword(req, res, next){
-//     try{
-//         const oldPassword=req.body.oldPassword;
-//         const newPassword=await bcryptjs.hash(req.body.newPassword, 10);
-//         const user=await User.findById(req.user.userId);
-//         if(bcryptjs.compare(user.password, oldPassword)){
-//             user.password=newPassword;
-//             user.save();
-//             res.status(200).send({"message":"success"});
-//         }else{
-//             res.status(400).send({"message": "bad request", "pass":oldPassword, "newPassword":newPassword}); 
-//         }
-//     }catch(e){
-//         res.status(500).send({"message": "eternal server error"});
-//     }
+async function getSeatsFromHall(req, res, next){
+    try{
+        const hall = req.params.hall;
+        const seats=await Seat.find({hallNumber: hall});
+        if(seats){
+            res.status(200).send({"message":"success", "seats": seats});
+        }else{
+            res.status(400).send({"message": "bad request"}); 
+        }
+    }catch(e){
+        res.status(500).send({"message": "eternal server error"});
+    }
 
-// }
+}
 
 module.exports = {
-    createSeat
+    createSeat,
+    getSeatsFromHall
 }
