@@ -14,6 +14,10 @@ const performanceSchema=mongoose.Schema({
     type: String,
     required:true
   },
+  performanceTime:{
+    type: String,
+    required:true
+  },
   performanceNumberOfSeats:{
     type:Number,
     required:true
