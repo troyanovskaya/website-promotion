@@ -7,11 +7,11 @@ const performanceSchema=mongoose.Schema({
     required:true
   },
   performanceHall:{
-    type:String,
+    type:Number,
     required:true
   },
   performanceDate:{
-    type: Date,
+    type: String,
     required:true
   },
   performanceNumberOfSeats:{

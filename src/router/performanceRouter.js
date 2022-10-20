@@ -1,19 +1,11 @@
-// const express = require('express');
-// const router = express.Router();
-//const { createNote, getNotes, getNote, deleteNote, updateNote, changeCheckNote} = require('./notesService.js');
-//const {authMiddleware}=require('./middleware/authMiddleware.js');
+const express = require('express');
+const router = express.Router();
+const {createPerformance} = require('../service/performanceService')
 
-// router.post('/', authMiddleware, createNote);
+router.post('/performance', createPerformance);
+// router.delete('/seat', deleteSeat);
+// router.get('/seats/:hall', getSeatsFromHall);
 
-// router.get('/', authMiddleware, getNotes);
-
-// router.get('/:id', authMiddleware, getNote);
-
-// router.delete('/:id', authMiddleware,  deleteNote);
-
-// router.put('/:id', authMiddleware, updateNote);
-// router.patch('/:id', authMiddleware, changeCheckNote)
-
-// module.exports = {
-//   performanceRouter: router
-// };
+module.exports = {
+  performanceRouter: router
+};

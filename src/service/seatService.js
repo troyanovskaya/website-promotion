@@ -1,6 +1,4 @@
 const {Seat}=require('../Schema/Seat.js');
-// const jwt=require('jsonwebtoken');
-// const bcryptjs=require('bcryptjs');
 
 async function createSeat(req, res, next){
     try{
@@ -22,34 +20,6 @@ async function createSeat(req, res, next){
     }
     
 }
-// async function loginUser(req, res, next){ 
-//     try{
-//         const user=await User.findOne({username: req.body.username});
-//         if(user && await bcryptjs.compare(String(req.body.password), String(user.password))){
-//             const payload={username:user.username, userId:user._id};
-//             const jwtToken=jwt.sign(payload,'secret-key');
-//             res.status(200).json({"jwt_token":jwtToken, "message":"success"});
-//         }else{
-//             res.status(400).send({"message": "bad request"}); 
-//         }
-//     }catch(e){
-//         res.status(500).send({"message": "eternal server error"});
-//     }
-// }
-// async function getUsersInfo(req, res, next){
-//     try{
-//       const user=await User.findById(req.user.userId);
-//       if(user){
-//         res.status(200).json({user:{"_id": user._id, "username":user.username, "creationDate":user.date}});
-//       }else{
-//         res.status(400).send({"message": "bad request"});
-//       }
-      
-//     }catch(e){
-//         res.status(500).send({"message": "eternal server error"});
-//     }    
-// }
-
 async function deleteSeat(req, res, next){
     try{
         const seat=await Seat.findById(req.body.seatId);

@@ -4,13 +4,13 @@ const app = express();
 const port=8080;
 
 const { seatRouter } = require('./src/router/seatRouter.js');
-// const { usersRouter } = require('./usersRouter.js');
+const { performanceRouter } = require('./src/router/performanceRouter.js');
 
 app.use(express.json());
 app.use(morgan('tiny'));
 
 app.use('/api/', seatRouter);
-// app.use('/api/', usersRouter);
+app.use('/api/', performanceRouter);
 
 const start = async () => {
   try {
