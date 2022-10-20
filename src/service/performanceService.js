@@ -65,11 +65,48 @@ async function getPerformanceForDate(req, res, next){
       }
 }
 
+function formatDate(today){
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    return dd + '/' + mm + '/' + yyyy;
+
+}
+
+async function getFuturePerformance(req, res, next){
+    try{
+        let number = req.params.number;
+        let today = new Date();
+        let formattedDate = formatDate(today)
+        let array=[];
+        if (number){
+            while (number>0){
+                let performance=await Performance.find({"performanceDate": formattedDate});
+                console.log(performance);
+                array = array.concat(performance);
+                number--;
+                let tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                formattedDate = formatDate(tomorrow);
+                today=tomorrow;
+            }
+            res.status(200).send({"message":"success", "performance": array});
+        }else{
+          res.status(400).send({"message": "bad request"});
+        }      
+      }catch(e){
+          res.status(500).send({"message": "eternal server error"});
+      }
+}
+
 
 
 module.exports = {
     createPerformance,
     changePerformanceTime,
     deletePerformance,
-    getPerformanceForDate
+    getPerformanceForDate,
+    getFuturePerformance
 }
