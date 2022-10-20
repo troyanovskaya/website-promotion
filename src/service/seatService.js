@@ -50,20 +50,19 @@ async function createSeat(req, res, next){
 //     }    
 // }
 
-// async function deleteUser(req, res, next){
-//     try{
-//         const user=await User.findById(req.user.userId);
-//         user.delete();
-//         const user1=await User.findById(req.user.userId);
-//         if(!await User.findById(req.user.userId)){
-//           res.status(200).send({"message":"success"});
-//         }else{
-//           res.status(400).send({"message": "bad request"});
-//         }        
-//       }catch(e){
-//           res.status(500).send({"message": "eternal server error"});
-//       }
-// }
+async function deleteSeat(req, res, next){
+    try{
+        const seat=await Seat.findById(req.body.seatId);
+        seat.delete();
+        if(!await Seat.findById(req.body.seatId)){
+          res.status(200).send({"message":"success"});
+        }else{
+          res.status(400).send({"message": "bad request"});
+        }        
+      }catch(e){
+          res.status(500).send({"message": "eternal server error"});
+      }
+}
 
 async function getSeatsFromHall(req, res, next){
     try{
@@ -82,5 +81,6 @@ async function getSeatsFromHall(req, res, next){
 
 module.exports = {
     createSeat,
-    getSeatsFromHall
+    getSeatsFromHall,
+    deleteSeat
 }

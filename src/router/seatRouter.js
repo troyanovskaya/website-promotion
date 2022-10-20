@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {createSeat, getSeatsFromHall} = require('../service/seatService')
+const {createSeat, getSeatsFromHall, deleteSeat} = require('../service/seatService')
 //const {authMiddleware}=require('./middleware/authMiddleware.js');
 //createSeat
 
 router.post('/seat', createSeat);
+router.delete('/seat', deleteSeat);
 router.get('/seats/:hall', getSeatsFromHall);
 
 // router.get('/', authMiddleware, getNotes);
