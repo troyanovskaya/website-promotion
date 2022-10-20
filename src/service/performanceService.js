@@ -21,19 +21,20 @@ async function createPerformance(req, res, next){
     }
     
 }
-// async function deleteSeat(req, res, next){
-//     try{
-//         const seat=await Seat.findById(req.body.seatId);
-//         seat.delete();
-//         if(!await Seat.findById(req.body.seatId)){
-//           res.status(200).send({"message":"success"});
-//         }else{
-//           res.status(400).send({"message": "bad request"});
-//         }        
-//       }catch(e){
-//           res.status(500).send({"message": "eternal server error"});
-//       }
-// }
+async function changePerformanceTime(req, res, next){
+    try{
+        const performance=await Performance.findById(req.body.performanceId);
+        if(performance){
+          performance.performanceDate = req.body.performanceDate;
+          performance.save();
+          res.status(200).send({"message":"success", "updatedPerformance": performance});
+        }else{
+          res.status(400).send({"message": "bad request"});
+        }        
+      }catch(e){
+          res.status(500).send({"message": "eternal server error"});
+      }
+}
 
 // async function getSeatsFromHall(req, res, next){
 //     try{
@@ -51,5 +52,6 @@ async function createPerformance(req, res, next){
 // }
 
 module.exports = {
-    createPerformance
+    createPerformance,
+    changePerformanceTime
 }
