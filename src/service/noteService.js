@@ -1,89 +1,65 @@
-// const {User}=require('./modules/Users.js');
-// const jwt=require('jsonwebtoken');
-// const bcryptjs=require('bcryptjs');
+const {Note}=require('../Schema/Note.js');
+const {Performance}=require('../Schema/Performance.js');
+const {Seat}=require('../Schema/Seat.js');
 
-// async function registerUser(req, res, next){
-//     try{
-//         let date= JSON.stringify(new Date());
-//         console.log(date);
-//         const {username, password}=req.body;
-//         if(username && password){
-//             const user=new User({
-//                 username,
-//                 password: await bcryptjs.hash(password, 10),
-//                 date
-//             });
-//             user.save();
-//             res.status(200).send({"message": "success"});
-//         }else{
-//             res.status(400).json({"message": "bad request"});
-//         }        
-//     }catch(e){
-//         res.status(500).send({"message": "eternal server error"});
-//     }
+function formatDate(today){
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Months start at 0!
+    let dd = today.getDate();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    return yyyy + '-' + mm + '-' + dd;
+}
+
+async function createNote(req, res, next){
+    try{
+        const {performanceId, seatId, clientName}=req.body;
+        const seat = await Seat.findById(seatId);
+        const performance = await Performance.findById(performanceId);
+        const booked = true;
+        let today = new Date();
+        let bookDate = formatDate(today)
+        if(seat && performance){
+            const perDate = new Date(performance.performanceDate);
+            if(perDate>today){
+                const note=new Note({
+                    performanceId, 
+                    seatId,
+                    booked,
+                    clientName,
+                    bookDate
+                });
+                note.save();
+                res.status(200).send({"message": "success", "note": note});
+            }else{
+                res.status(400).send({"message": "you can book a performance not less then 1 day before its date"});
+            }
+
+        }else{
+            res.status(400).json({"message": "bad request"});
+        }        
+    }catch(e){
+        res.status(500).send({"message": "eternal server error"});
+    }
     
-// }
-// async function loginUser(req, res, next){ 
-//     try{
-//         const user=await User.findOne({username: req.body.username});
-//         if(user && await bcryptjs.compare(String(req.body.password), String(user.password))){
-//             const payload={username:user.username, userId:user._id};
-//             const jwtToken=jwt.sign(payload,'secret-key');
-//             res.status(200).json({"jwt_token":jwtToken, "message":"success"});
-//         }else{
-//             res.status(400).send({"message": "bad request"}); 
-//         }
-//     }catch(e){
-//         res.status(500).send({"message": "eternal server error"});
-//     }
-// }
-// async function getUsersInfo(req, res, next){
-//     try{
-//       const user=await User.findById(req.user.userId);
-//       if(user){
-//         res.status(200).json({user:{"_id": user._id, "username":user.username, "creationDate":user.date}});
-//       }else{
-//         res.status(400).send({"message": "bad request"});
-//       }
-      
-//     }catch(e){
-//         res.status(500).send({"message": "eternal server error"});
-//     }    
-// }
+}
 
-// async function deleteUser(req, res, next){
-//     try{
-//         const user=await User.findById(req.user.userId);
-//         user.delete();
-//         const user1=await User.findById(req.user.userId);
-//         if(!await User.findById(req.user.userId)){
-//           res.status(200).send({"message":"success"});
-//         }else{
-//           res.status(400).send({"message": "bad request"});
-//         }        
-//       }catch(e){
-//           res.status(500).send({"message": "eternal server error"});
-//       }
-// }
-
-// async function changeUsersPassword(req, res, next){
-//     try{
-//         const oldPassword=req.body.oldPassword;
-//         const newPassword=await bcryptjs.hash(req.body.newPassword, 10);
-//         const user=await User.findById(req.user.userId);
-//         if(bcryptjs.compare(user.password, oldPassword)){
-//             user.password=newPassword;
-//             user.save();
-//             res.status(200).send({"message":"success"});
-//         }else{
-//             res.status(400).send({"message": "bad request", "pass":oldPassword, "newPassword":newPassword}); 
-//         }
-//     }catch(e){
-//         res.status(500).send({"message": "eternal server error"});
-//     }
-
-// }
-
-// module.exports = {
-//     createNote
-// }
+async function getNotesByname(req, res, next){
+    try{
+        const {clientName}=req.body;
+        console.log(clientName);
+        if(clientName){
+            const notes = await Note.find({"clientName": clientName});
+            res.status(200).send({"message": "success", "note": notes});
+        }else{
+            res.status(400).json({"message": "bad request"});
+        }        
+    }catch(e){
+        res.status(500).send({"message": "eternal server error"});
+    }
+    
+}
+module.exports = {
+    createNote,
+    getNotesByname
+}

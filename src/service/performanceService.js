@@ -2,7 +2,7 @@ const {Performance}=require('../Schema/Performance.js');
 async function createPerformance(req, res, next){
     try{
         const {performanceName, performanceHall, performanceDate, performanceTime, performanceNumberOfSeats, performanceDuration}=req.body;
-        console.log(performanceName);
+    
         if(performanceName && performanceHall && performanceDate && performanceTime && performanceNumberOfSeats && performanceDuration){
             const performance=new Performance({
                 performanceName, 
@@ -66,13 +66,12 @@ async function getPerformanceForDate(req, res, next){
 }
 
 function formatDate(today){
-    const yyyy = today.getFullYear();
-    let mm = today.getMonth() + 1; // Months start at 0!
-    let dd = today.getDate();
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-    return dd + '/' + mm + '/' + yyyy;
-
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1; // Months start at 0!
+  let dd = today.getDate();
+  if (dd < 10) dd = '0' + dd;
+  if (mm < 10) mm = '0' + mm;
+  return yyyy + '-' + mm + '-' + dd;
 }
 
 async function getFuturePerformance(req, res, next){

@@ -1,19 +1,17 @@
-// const express = require('express');
-// const router = express.Router();
-//const { createNote, getNotes, getNote, deleteNote, updateNote, changeCheckNote} = require('./notesService.js');
+const express = require('express');
+const router = express.Router();
+const {createNote, getNotesByname}= require('../service/noteService.js');
 //const {authMiddleware}=require('./middleware/authMiddleware.js');
 
-// router.post('/', authMiddleware, createNote);
+router.post('/note', createNote);
 
-// router.get('/', authMiddleware, getNotes);
+router.get('/userNotes', getNotesByname);
 
-// router.get('/:id', authMiddleware, getNote);
+// router.get('/notes', getNotesByPerformanceAndDate);
 
-// router.delete('/:id', authMiddleware,  deleteNote);
+// router.delete('/note', deleteNote);
 
-// router.put('/:id', authMiddleware, updateNote);
-// router.patch('/:id', authMiddleware, changeCheckNote)
 
-// module.exports = {
-//   noteRouter: router
-// };
+module.exports = {
+  noteRouter: router
+};

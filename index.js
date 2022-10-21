@@ -5,12 +5,14 @@ const port=8080;
 
 const { seatRouter } = require('./src/router/seatRouter.js');
 const { performanceRouter } = require('./src/router/performanceRouter.js');
+const { noteRouter } = require('./src/router/noteRouter.js');
 
 app.use(express.json());
 app.use(morgan('tiny'));
 
 app.use('/api/', seatRouter);
 app.use('/api/', performanceRouter);
+app.use('/api/', noteRouter);
 
 const start = async () => {
   try {

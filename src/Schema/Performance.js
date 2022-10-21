@@ -26,6 +26,11 @@ const performanceSchema=mongoose.Schema({
     type:Number,
     required:true
   }
+  // isOver:{
+  //   type: Boolean,
+  //   required:true
+  // }
+
 });
 
 const Performance=mongoose.model('Performance', performanceSchema);
