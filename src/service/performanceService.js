@@ -2,7 +2,9 @@ const {Performance}=require('../Schema/Performance.js');
 async function createPerformance(req, res, next){
     try{
         const {performanceName, performanceHall, performanceDate, performanceTime, performanceNumberOfSeats, performanceDuration}=req.body;
-    
+        const perDate = new Date(performanceDate);
+        const today = new Date();
+        let isOver = !(perDate>today);        
         if(performanceName && performanceHall && performanceDate && performanceTime && performanceNumberOfSeats && performanceDuration){
             const performance=new Performance({
                 performanceName, 
@@ -10,7 +12,8 @@ async function createPerformance(req, res, next){
                 performanceDate, 
                 performanceTime,
                 performanceNumberOfSeats, 
-                performanceDuration
+                performanceDuration,
+                isOver
             });
             performance.save();
             res.status(200).send({"message": "success", "performance": performance});
@@ -83,7 +86,6 @@ async function getFuturePerformance(req, res, next){
         if (number){
             while (number>0){
                 let performance=await Performance.find({"performanceDate": formattedDate});
-                console.log(performance);
                 array = array.concat(performance);
                 number--;
                 let tomorrow = new Date(today);
@@ -102,10 +104,29 @@ async function getFuturePerformance(req, res, next){
 
 
 
+
+async function checkIfIsOver(req, res, next){
+  try{
+      const {performanceId} = req.body;
+      const performance = await Performance.findById(performanceId);
+      console.log(performanceId);
+      if (performance){
+        const today = new Date();
+        const perDate = performance.performanceDate;
+        performance.isOver = !(perDate>today);
+        res.status(200).send({"message":"success", "performance": performance});
+      }else{
+        res.status(400).send({"message": "bad request"});
+      }      
+    }catch(e){
+        res.status(500).send({"message": "eternal server error"});
+    }
+}
 module.exports = {
     createPerformance,
     changePerformanceTime,
     deletePerformance,
     getPerformanceForDate,
-    getFuturePerformance
+    getFuturePerformance,
+    checkIfIsOver
 }

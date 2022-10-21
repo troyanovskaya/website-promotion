@@ -25,11 +25,11 @@ const performanceSchema=mongoose.Schema({
   performanceDuration:{
     type:Number,
     required:true
+  },
+  isOver:{
+    type: Boolean,
+    required:true
   }
-  // isOver:{
-  //   type: Boolean,
-  //   required:true
-  // }
 
 });
 

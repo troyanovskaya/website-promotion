@@ -73,6 +73,8 @@ async function deleteNote(req, res, next){
           res.status(500).send({"message": "eternal server error"});
       }
 }
+
+
 module.exports = {
     createNote,
     getNotesByname,
