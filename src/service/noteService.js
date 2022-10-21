@@ -59,7 +59,22 @@ async function getNotesByname(req, res, next){
     }
     
 }
+
+async function deleteNote(req, res, next){
+    try{
+        const note=await Note.findById(req.body.noteId);
+        note.delete();
+        if(!await Note.findById(req.body.noteId)){
+          res.status(200).send({"message":"success"});
+        }else{
+          res.status(400).send({"message": "bad request"});
+        }        
+      }catch(e){
+          res.status(500).send({"message": "eternal server error"});
+      }
+}
 module.exports = {
     createNote,
-    getNotesByname
+    getNotesByname,
+    deleteNote
 }
